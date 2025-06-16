@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>DFA/NFA Converter</title>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: false });</script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="split-container" style="display: flex; height: 100vh;">
+    <!-- KIRI: Anggota Kelompok -->
+    <div class="left-pane" style="width: 40%; padding: 20px; overflow-y: auto;">
+        <h2>Anggota Kelompok</h2>
+        <div class="gallery">
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='bet.jpeg') }}" style="width:70%">
+                <div>
+                    <p>Shain Beatrix</p>
+                    <p>237064516085</p>
+                </div>
+            </div>
+
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='nona.png') }}" style="width:70%">
+                <div>
+                    <p>Yovita Esta</p>
+                    <p>237064516081</p>
+                </div>
+            </div>
+
+            <div class="polaroid">
+                <img src="{{ url_for('static', filename='aur.png') }}" style="width:70%">
+                <div>
+                    <p>Najwa Aura</p>
+                    <p>237064516072</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KANAN: Form dan Output -->
+    <div class="right-pane" style="width: 60%; padding: 20px; overflow-y: auto; display: flex; justify-content: center;">
+        <div class="container" style="width: 100%; max-width: 500px;">
+            <h1>DFA/NFA Converter</h1>
+
+            <form method="POST" id="convertForm">
+                <label for="value">Masukkan Nilai:</label>
+                <input style="width: 95%;" type="text" name="value" id="value" required>
+
+                <label for="base">Tipe Data:</label>
+                <select name="base" id="base">
+                    <option value="decimal">Desimal</option>
+                    <option value="octal">Oktal</option>
+                    <option value="hex">Heksadesimal</option>
+                </select>
+
+                <label for="machine">Pilih Mesin:</label>
+                <select name="machine" id="machine">
+                    <option value="dfa" {% if machine == 'dfa' %}selected{% endif %}>DFA</option>
+                    <option value="nfa" {% if machine == 'nfa' %}selected{% endif %}>NFA</option>
+                </select>
+
+                <button type="submit" name="action" value="convert">Konversi</button>
+                <button type="submit" name="action" value="clear">Clear</button>
+            </form>
+
+            {% if binary_value %}
+            <h2>Biner: {{ binary_value }}</h2>
+            <h3>Hasil {{ machine|capitalize }}: {{ result }}</h3>
+            <h4>State Akhir: {{ final_state }}</h4>
+            <p>Final States DFA: {{ dfa_final_states }}</p>
+
+            <h4>Langkah Transisi (Tabel):</h4>
+            <table border="1" style="border-collapse: collapse;">
+                <tr>
+                    <th>State</th>
+                    <th>Input</th>
+                    <th>Next State</th>
+                </tr>
+                {% for step in steps %}
+                <tr>
+                    <td>{{ step[0] }}</td>
+                    <td>{{ step[1] }}</td>
+                    <td>{{ step[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h4>Riwayat Transisi:</h4>
+            <pre style="background: #f1f1f1; padding: 10px;">
+{% for step in steps %}
+{{ step[0] }} --{{ step[1] }}--> {{ step[2] }}
+{% endfor %}
+            </pre>
+
+            <button type="button" onclick="openModal()" style="margin-top: 15px;">Lihat Diagram FSM</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Diagram FSM -->
+<div id="fsmModal" class="modal" style="display:none; position: fixed; top: 0; left: 0; width:100%; height:100%; background: rgba(0,0,0,0.7); z-index: 1000;">
+    <div style="background: white; width: 80%; margin: 50px auto; padding: 20px; position: relative; max-height: 90vh; overflow-y: auto;">
+        <span onclick="closeModal()" style="position: absolute; right: 10px; top: 10px; cursor: pointer; font-size: 24px;">&times;</span>
+        <h3>Diagram FSM</h3>
+        {% if mermaid_code %}
+        <div class="mermaid" id="mermaidDiagram">
+            {{ mermaid_code|safe }}
+        </div>
+        {% else %}
+        <p>Tidak ada diagram untuk ditampilkan.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

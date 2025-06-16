@@ -1,0 +1,109 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.split-container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-pane {
+    width: 50%;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px 20px;
+}
+
+.left-pane img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.right-pane {
+    width: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    padding: 40px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.container {
+    justify-content: center;
+    background-color: #E7F2E4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 370px;
+    text-align: center;
+}
+
+div.polaroid {
+    width: 30%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 15px;
+}
+
+div.container {
+    text-align: center;
+    /* padding: 10px 5px; */
+}
+
+.gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* biar tetap rapi di layar kecil */
+}
+
+
+form input,
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: center;
+}
