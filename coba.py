@@ -1,18 +1,55 @@
-from automata.fa.dfa import DFA
+import { useState, useEffect } from "react";
 
-dfa = DFA(
-    states={'q0', 'q1'},
-    input_symbols={'0', '1'},
-    transitions={
-        'q0': {'0': 'q1', '1': 'q0'},
-        'q1': {'0': 'q0', '1': 'q1'}
-    },
-    initial_state='q0',
-    final_states={'q0'}
-)
+function App() {
+  const [joke, setJoke] = useState(null);    
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);     
 
-print(dfa.accepts_input('1010'))
-print(dfa.accepts_input('100')) 
-print(dfa.accepts_input('10'))    
-print(dfa.accepts_input('1000'))  
-print(dfa.accepts_input('1100'))
+  // fungsi ambil data joke
+  async function fetchJoke() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        "https://v2.jokeapi.dev/joke/Any?blacklistFlags=racist,sexist&type=single"
+      );
+
+      if (!response.ok) throw new Error("Gagal mengambil data");
+
+      const data = await response.json();
+      setJoke(data.joke); // dari API, text joke ada di field "joke"
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // otomatis jalan sekali waktu pertama kali load
+  useEffect(() => {
+    fetchJoke();
+  }, []);
+
+  return (
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <h1>😂 Joke Random 😂</h1>
+
+      {/* kondisi loading */}
+      {loading && <p>Memuat...</p>}
+
+      {/* kondisi error */}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+
+      {/* kalau joke berhasil */}
+      {joke && <p>{joke}</p>}
+
+      {/* tombol untuk ambil joke baru */}
+      <button onClick={fetchJoke} style={{ marginTop: "20px" }}>
+        🔄 Joke Baru
+      </button>
+    </div>
+  );
+}
+
+export default App;
